@@ -22,9 +22,11 @@ Vagrant.configure("2") do |config|
 
     exec "$SHELL"
 
-    pyenv install 3.9.0
+    sudo apt-get update; sudo apt-get install --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
-    pyenv global 3.9.0
+    pyenv install --verbose 3.8.5
+
+    pyenv global 3.8.5
 
 SHELL
 
