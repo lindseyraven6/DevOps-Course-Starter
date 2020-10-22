@@ -1,7 +1,7 @@
 
 Vagrant.configure("2") do |config|
   config.vm.box = "hashicorp/bionic64"
-
+  config.vm.network "forwarded_port", guest: 5000, host: 5000
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     sudo apt-get update
 
@@ -28,6 +28,17 @@ Vagrant.configure("2") do |config|
 
     pyenv global 3.8.5
 
-SHELL
+    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+  SHELL
+
+  config.trigger.after :up do |trigger|
+    trigger.name = "Launching App"
+    trigger.info = "Running the TODO app setup script"
+    trigger.run_remote = {privileged: false, inline: "
+      cd /vagrant
+      poetry install
+      poetry run flask run -h 10.0.2.15
+    "}
+  end
 
 end
