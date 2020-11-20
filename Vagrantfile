@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
     xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
 
     # TODO: Install pyenv
-    rm -R ~/.pyenv
+    rm -R -f ~/.pyenv
 
     git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 
@@ -36,8 +36,11 @@ Vagrant.configure("2") do |config|
     trigger.info = "Running the TODO app setup script"
     trigger.run_remote = {privileged: false, inline: "
       cd /vagrant
+      lsof -i :5000
+      pkill flask
+      lsof -i :5000
       poetry install
-      poetry run flask run -h 10.0.2.15
+      poetry run flask run -h 0.0.0.0
     "}
   end
 
