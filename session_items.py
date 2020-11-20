@@ -1,13 +1,9 @@
-from flask import session
-
 import requests
 import os
 
-from requests.models import HTTPError
 from todo_item import TodoItem
 from flask import current_app as app
 
-_DEFAULT_ITEMS = []
 
 def get_items():
     """
