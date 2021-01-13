@@ -62,3 +62,11 @@ def complete_todo(todo_id):
 
     if response.status_code != 200:
         app.logger.error(f"Delete request failed with status code {response.status_code}")
+
+def started_todo(todo_id):
+    payload = {
+        'key': os.getenv('TRELLO_KEY'), 
+        'token': os.getenv('TRELLO_TOKEN'),
+        'idList': os.getenv('TRELLO_IN_PROGRESS_LIST'), 
+    }
+    response = requests.put(f'https://api.trello.com/1/Cards/{todo_id}', params=payload)
