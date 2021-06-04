@@ -16,11 +16,20 @@ $ .\setup.ps1
 ```bash
 $ source setup.sh --windows
 ```
+Dependencies
 
-Once the setup script has completed and all packages have been installed, start the Flask app by running:
-```bash
-$ flask run
-```
+The project uses a virtual environment to isolate package dependencies. To create the virtual environment and install required packages, run the following from your preferred shell:
+
+$ poetry install
+You'll also need to clone a new .env file from the .env.template to store local configuration options. This is a one-time operation on first setup:
+
+$ cp .env.template .env  # (first time only)
+The .env file is used by flask to set environment variables when running flask run. This enables things like development mode (which also enables features like hot reloading when you make a file change). There's also a SECRET_KEY variable which is used to encrypt the flask session cookie.
+
+Once the all dependencies have been installed, start the Flask app in development mode within the poetry environment by running:
+
+$ poetry run flask run
+
 
 You should see output similar to the following:
 ```bash
