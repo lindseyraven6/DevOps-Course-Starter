@@ -3,6 +3,9 @@ import os
 
 from todo_item import TodoItem
 from flask import current_app as app
+from dotenv import load_dotenv
+
+load_dotenv(verbose=True)
 
 
 def get_items():
@@ -16,7 +19,7 @@ def get_items():
     payload = {'key': os.getenv('TRELLO_KEY'), 'token': os.getenv('TRELLO_TOKEN')}
     r = requests.get(f'https://api.trello.com/1/boards/{os.getenv("TRELLO_BOARD_ID")}/cards', params=payload)
     list = []
- 
+
     for item in r.json():
         list_item = TodoItem(item["id"], item['name'], item["idList"])
         list.append(list_item)
@@ -37,7 +40,7 @@ def add_item(title):
     payload = {
         'key': os.getenv('TRELLO_KEY'), 
         'token': os.getenv('TRELLO_TOKEN'),
-        'idList': os.getenv('TRELLO_TODO_LIST'), 
+        'idList': os.getenv('LIST_ID_TO_DO'), 
         'name': title
     }
     r = requests.post('https://api.trello.com/1/Cards', params=payload)
@@ -56,7 +59,7 @@ def complete_todo(todo_id):
     payload = {
         'key': os.getenv('TRELLO_KEY'), 
         'token': os.getenv('TRELLO_TOKEN'),
-        'idList': os.getenv('TRELLO_COMPLETED_LIST'), 
+        'idList': os.getenv('LIST_ID_DONE'), 
     }
     response = requests.put(f'https://api.trello.com/1/Cards/{todo_id}', params=payload)
 
@@ -67,6 +70,9 @@ def started_todo(todo_id):
     payload = {
         'key': os.getenv('TRELLO_KEY'), 
         'token': os.getenv('TRELLO_TOKEN'),
-        'idList': os.getenv('TRELLO_IN_PROGRESS_LIST'), 
+        'idList': os.getenv('LIST_ID_IN_PROGRESS'), 
     }
     response = requests.put(f'https://api.trello.com/1/Cards/{todo_id}', params=payload)
+
+    if response.status_code != 200:
+        app.logger.error(f"Delete request failed with status code {response.status_code}")

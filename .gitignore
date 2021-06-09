@@ -117,3 +117,4 @@ env/
 
 bin/
 pyvenv.cfg
+.venv
