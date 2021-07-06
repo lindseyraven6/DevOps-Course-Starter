@@ -1,7 +1,7 @@
 import pytest
-from view_model import ViewModel
+from todo_app.view_model import ViewModel
 from datetime import datetime, timedelta
-from todo_item import TodoItem
+from todo_app.todo_item import TodoItem
 import os
 from dotenv import load_dotenv, find_dotenv
 
@@ -53,7 +53,7 @@ def test_items(view_model):
 def test_todo_items(view_model):
     assert len(view_model.todo_items) == 1
     for item in view_model.todo_items:
-        assert item.status == "To Do"
+        assert item.status == "Not Started"
 
 
 def test_doing_items(view_model):
